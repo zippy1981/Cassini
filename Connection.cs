@@ -143,6 +143,10 @@ namespace Cassini {
                     contentType = "application/x-javascript";
                     break;
 
+                case ".svg": 
+                    contentType = "image/svg+xml";
+                    break;
+
                 default:
                     break;
             }
