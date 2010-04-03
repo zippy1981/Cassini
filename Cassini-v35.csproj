@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Request.cs" />
     <Compile Include="Server.cs" />
+    <None Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cassini.ico" />

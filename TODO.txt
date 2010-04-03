@@ -1,0 +1,4 @@
+﻿TODO List:
+
+Get SVG files to download with the correct mime type. Using this as a guide:
+	http://www.west-wind.com/presentations/aspnetruntime/aspnetruntime.asp
