@@ -782,6 +782,11 @@ namespace Cassini {
                     }
                     break;
                 case HttpWorkerRequest.HeaderContentType:
+                    /*
+                     * MakeContentTypeHeader handles some mime types, noteably SVG,
+                     * that are not automagically handled via SimpleRequest, and returns
+                     * null otherwise.
+                     */
                     string contentType = Connection.MakeContentTypeHeader(_pathTranslated);
                     value = contentType ?? value;
                 	break;
