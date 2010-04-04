@@ -104,7 +104,7 @@ namespace Cassini {
             return sb.ToString();
         }
 
-        // TODO: Move this function to a shared library.
+        // TODO: Move this function to a static utility class.
         public static String MakeContentTypeHeader(string fileName) {
             System.Diagnostics.Trace.TraceInformation("File Name: {0}", fileName);
             string contentType = null;
