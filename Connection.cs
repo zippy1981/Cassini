@@ -104,8 +104,8 @@ namespace Cassini {
             return sb.ToString();
         }
 
-        static String MakeContentTypeHeader(string fileName) {
-            Debug.Assert(File.Exists(fileName));
+        public static String MakeContentTypeHeader(string fileName) {
+            System.Diagnostics.Trace.TraceInformation("File Name: {0}", fileName);
             string contentType = null;
 
             var info = new FileInfo(fileName);
@@ -155,7 +155,7 @@ namespace Cassini {
                 return null;
             }
 
-            return "Content-Type: " + contentType + "\r\n";
+            return contentType;
         }
 
         string GetErrorResponseBody(int statusCode, string message) {
@@ -235,7 +235,7 @@ namespace Cassini {
             }
 
             // Deny the request if the contentType cannot be recognized.
-            string contentTypeHeader = MakeContentTypeHeader(fileName);
+            string contentTypeHeader = string.Format("Content-Type: {0}\r\n", MakeContentTypeHeader(fileName));
             if (contentTypeHeader == null) {
                 WriteErrorAndClose(403);
                 return;

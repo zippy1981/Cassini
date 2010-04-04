@@ -781,6 +781,10 @@ namespace Cassini {
                         return;
                     }
                     break;
+                case HttpWorkerRequest.HeaderContentType:
+                    string contentType = Connection.MakeContentTypeHeader(_pathTranslated);
+                    value = contentType ?? value;
+                	break;
             }
 
             _responseHeadersBuilder.Append(GetKnownResponseHeaderName(index));
