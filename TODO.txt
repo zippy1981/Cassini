@@ -1,8 +1,13 @@
 ﻿TODO List:
 
-[DONE] Get SVG files to download with the correct mime type. Using this as a guide:
-	http://www.west-wind.com/presentations/aspnetruntime/aspnetruntime.asp
-Consider using urlmon.dll's FindMimeFromData to detect the mime type of the file:
+* Add a drop down history to the "application directory" path.
+* Merge in enhancements from Cassini++
+	http://cassinipp.codeplex.com/
+* Merge in enhancements from CassiniDev
+	http://cassinidev.codeplex.com/
+* Consider using urlmon.dll's FindMimeFromData to detect the mime type of the file:
 	http://pinvoke.net/default.aspx/urlmon.FindMimeFromData
-Determine how SimpleWorkerRequest handles mime types:
+* Determine how SimpleWorkerRequest handles mime types:
 	http://stackoverflow.com/questions/2574356/how-does-simpleworkerrequest-associate-mime-types-with-extensions
+* [DONE] Get SVG files to download with the correct mime type. Using this as a guide:
+	http://www.west-wind.com/presentations/aspnetruntime/aspnetruntime.asp
