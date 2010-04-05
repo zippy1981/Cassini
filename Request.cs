@@ -416,20 +416,6 @@ namespace Cassini {
             }
         }
 
-        void SkipAllPostedContent() {
-            if (_contentLength > 0 && _preloadedContentLength < _contentLength) {
-                int bytesRemaining = (_contentLength - _preloadedContentLength);
-
-                while (bytesRemaining > 0) {
-                    byte[] bytes = _connection.ReadRequestBytes(bytesRemaining);
-                    if (bytes == null || bytes.Length == 0) {
-                        return;
-                    }
-                    bytesRemaining -= bytes.Length;
-                }
-            }
-        }
-
         bool IsRequestForRestrictedDirectory() {
             String p = CultureInfo.InvariantCulture.TextInfo.ToLower(_path);
 

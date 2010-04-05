@@ -58,8 +58,8 @@ namespace Cassini {
             _lowerCasedVirtualPathWithTrailingSlash = virtualPath.EndsWith("/", StringComparison.Ordinal) ? virtualPath : virtualPath + "/";
             _lowerCasedVirtualPathWithTrailingSlash = CultureInfo.InvariantCulture.TextInfo.ToLower(_lowerCasedVirtualPathWithTrailingSlash);
             _physicalPath = physicalPath;
-            _physicalClientScriptPath = HttpRuntime.AspClientScriptPhysicalPath + "\\";
-            _lowerCasedClientScriptPathWithTrailingSlash = CultureInfo.InvariantCulture.TextInfo.ToLower(HttpRuntime.AspClientScriptVirtualPath + "/");
+            _physicalClientScriptPath = HttpRuntime.AppDomainAppPath + "\\";
+            _lowerCasedClientScriptPathWithTrailingSlash = "/";
         }
 
         public void ProcessRequest(Connection conn) {
