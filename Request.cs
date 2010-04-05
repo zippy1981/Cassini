@@ -115,8 +115,8 @@ namespace Cassini {
                 return;
             }
 
-            // special case for directory listing
-            if (ProcessDirectoryListingRequest()) {
+            // special case for a request to a directory (ensure / at the end and process default documents)
+            if (ProcessDirectoryRequest()) {
                 return;
             }
 
@@ -448,11 +448,7 @@ namespace Cassini {
             return false;
         }
 
-        bool ProcessDirectoryListingRequest() {
-            if (_verb != "GET") {
-                return false;
-            }
-
+        bool ProcessDirectoryRequest() {
             String dirPathTranslated = _pathTranslated;
 
             if (_pathInfo.Length > 0) {
@@ -488,6 +484,25 @@ namespace Cassini {
                     _pathTranslated = defaultFilePath;
                     return false; // go through normal processing
                 }
+            }
+
+            return false; // go through normal processing
+        }
+
+        bool ProcessDirectoryListingRequest() {
+            if (_verb != "GET") {
+                return false;
+            }
+
+            String dirPathTranslated = _pathTranslated;
+
+            if (_pathInfo.Length > 0) {
+                // directory path can never have pathInfo
+                dirPathTranslated = MapPath(_path);
+            }
+
+            if (!Directory.Exists(dirPathTranslated)) {
+                return false;
             }
 
             // get all files and subdirs
@@ -915,6 +930,13 @@ namespace Cassini {
         }
 
         public override void FlushResponse(bool finalFlush) {
+            if (_responseStatus == 404 && !_headersSent && finalFlush && _verb == "GET") {
+                // attempt directory listing
+                if (ProcessDirectoryListingRequest()) {
+                    return;
+                }
+            }
+
             _connectionPermission.Assert();
 
             if (!_headersSent) {
