@@ -13,6 +13,9 @@ to it to improve upon it.
 This sample illustrates using the ASP.NET hosting APIs (System.Web.Hosting)
 to create a simple managed Web Server with System.Net APIs.
 
+Changea merged from http://certivision.com/wordpress/?m=201002
+* Support for remote connections (addition of optional commandline parameter loopback or any)
+
 New in Cassini v3.5.0.2
 * Fix for the default documents
 
@@ -29,6 +32,6 @@ New in Cassini v3.5:
 Instructions to Run Cassini
 ---------------------------
 
-Cassini-v35 <physical-path> <port> <virtual-path>
+Cassini-v35 <physical-path> <port> <virtual-path> [<loopback|any>]
 For example:
     Cassini-v35 c:\ 80 /

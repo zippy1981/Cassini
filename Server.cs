@@ -28,14 +28,17 @@ namespace Cassini {
         int _port;
         string _virtualPath;
         string _physicalPath;
+        IPAddress _addressType;
         bool _shutdownInProgress;
         Socket _socket;
         Host _host;
 
-        public Server(int port, string virtualPath, string physicalPath) {
+        public Server(int port, string virtualPath, string physicalPath, string addressType) {
             _port = port;
             _virtualPath = virtualPath;
             _physicalPath = physicalPath.EndsWith("\\", StringComparison.Ordinal) ? physicalPath : physicalPath + "\\";
+            _addressType = addressType.Equals("any", StringComparison.CurrentCultureIgnoreCase) ?
+              IPAddress.Any : IPAddress.Loopback;
         }
 
         public override object InitializeLifetimeService() {
@@ -85,10 +88,12 @@ namespace Cassini {
 
         public void Start() {
             try {
-                _socket = CreateSocketBindAndListen(AddressFamily.InterNetwork, IPAddress.Loopback, _port);
+                _socket = CreateSocketBindAndListen(AddressFamily.InterNetwork, _addressType, _port);
             }
             catch {
-                _socket = CreateSocketBindAndListen(AddressFamily.InterNetworkV6, IPAddress.IPv6Loopback, _port);
+              _addressType = (_addressType == IPAddress.Any) ?
+                IPAddress.IPv6Any : IPAddress.IPv6Loopback;
+              _socket = CreateSocketBindAndListen(AddressFamily.InterNetworkV6, _addressType, _port);
             }
 
             ThreadPool.QueueUserWorkItem(delegate {

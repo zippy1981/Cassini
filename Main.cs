@@ -23,6 +23,7 @@ namespace Cassini {
         static string _appPath;
         static string _portString;
         static string _virtRoot;
+        static string _addressType;
 
         // the web server
         Server _server;
@@ -40,6 +41,7 @@ namespace Cassini {
         LinkLabel browseLink = new LinkLabel();
         Button startButton = new Button();
         Button stopButton = new Button();
+        CheckBox allowRemote = new CheckBox();
 
         [STAThread]
         static void Main(string[] args) {
@@ -50,11 +52,13 @@ namespace Cassini {
             _portString = "80";
             _virtRoot = "/";
             _appPath = string.Empty;
+            _addressType = "loopback";
 
             try {
                 if (args.Length >= 1) _appPath = args[0];
                 if (args.Length >= 2) _portString = args[1];
                 if (args.Length >= 3) _virtRoot = args[2];
+                if (args.Length >= 4) _addressType = args[3];
             }
             catch {
             }
@@ -100,8 +104,10 @@ namespace Cassini {
                 return;
             }
 
+            _addressType = allowRemote.Checked ? "any" : "loopback";
+
             try {
-                _server = new Server(portNumber, _virtRoot, _appPath);
+                _server = new Server(portNumber, _virtRoot, _appPath, _addressType);
                 _server.Start();
             }
             catch {
@@ -199,19 +205,26 @@ namespace Cassini {
             portTextBox.TabIndex = 4;
             portTextBox.Text = _portString;
 
+            allowRemote.Location = new Point(270, 144);
+            allowRemote.Name = "allowRemoteCheckBox";
+            allowRemote.Size = new Size(270, 22);
+            allowRemote.TabIndex = 5;
+            allowRemote.Text = "Accept Remote Connections?";
+            allowRemote.Checked = _addressType.Equals("any", StringComparison.CurrentCultureIgnoreCase);
+
             vrootLabel.BackColor = Color.Transparent;
             vrootLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, (byte)(0));
             vrootLabel.Location = new Point(24, 184);
             vrootLabel.Name = "vrootLabel";
             vrootLabel.Size = new Size(152, 20);
-            vrootLabel.TabIndex = 5;
+            vrootLabel.TabIndex = 6;
             vrootLabel.Text = "Virtual &Root:";
             vrootLabel.TextAlign = ContentAlignment.TopRight;
 
             vrootTextBox.Location = new Point(184, 184);
             vrootTextBox.Name = "vrootTextBox";
             vrootTextBox.Size = new Size(120, 22);
-            vrootTextBox.TabIndex = 6;
+            vrootTextBox.TabIndex = 7;
             vrootTextBox.Text = _virtRoot;
 
             browseLabel.BackColor = Color.Transparent;
@@ -219,7 +232,7 @@ namespace Cassini {
             browseLabel.Location = new Point(24, 224);
             browseLabel.Name = "browseLabel";
             browseLabel.Size = new Size(152, 19);
-            browseLabel.TabIndex = 7;
+            browseLabel.TabIndex = 8;
             browseLabel.Text = "Click To Browse:";
             browseLabel.TextAlign = ContentAlignment.TopRight;
             browseLabel.Visible = false;
@@ -227,7 +240,7 @@ namespace Cassini {
             browseLink.Location = new Point(184, 224);
             browseLink.Name = "browseLink";
             browseLink.Size = new Size(308, 30);
-            browseLink.TabIndex = 8;
+            browseLink.TabIndex = 9;
             browseLink.Text = "";
             browseLink.LinkClicked += delegate(object sender, LinkLabelLinkClickedEventArgs e) {
                 browseLink.Links[browseLink.Links.IndexOf(e.Link)].Visited = true;
@@ -241,7 +254,7 @@ namespace Cassini {
             startButton.Location = new Point(328, 264);
             startButton.Name = "startButton";
             startButton.Size = new Size(96, 28);
-            startButton.TabIndex = 9;
+            startButton.TabIndex = 10;
             startButton.Text = "Start";
             startButton.Click += delegate { Start(); };
 
@@ -252,7 +265,7 @@ namespace Cassini {
             stopButton.Location = new Point(440, 264);
             stopButton.Name = "stopButton";
             stopButton.Size = new Size(96, 28);
-            stopButton.TabIndex = 10;
+            stopButton.TabIndex = 11;
             stopButton.Text = "Stop";
             stopButton.Click += delegate { Stop(); };
 
@@ -264,7 +277,7 @@ namespace Cassini {
             Controls.AddRange(new Control[] { 
                 logoPanel, 
                 appDirLabel, appDirTextBox, 
-                portLabel, portTextBox, 
+                portLabel, portTextBox, allowRemote, 
                 vrootLabel, vrootTextBox, 
                 browseLabel, browseLink,
                 startButton, stopButton
